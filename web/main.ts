@@ -1,15 +1,5 @@
 /// <reference path="ww.ts" />
 
-// Declare Clipboard API types, which don't exist in TypeScript yet.
-// https://developer.mozilla.org/en-US/docs/Web/API/Clipboard
-interface Clipboard {
-	read(): Promise<ClipboardItem[]>;
-}
-interface ClipboardItem {
-	types: string[];
-	getType(mimeType: string): Blob;
-}
-
 // Declare just enough of the extensions API to find out if we're
 // running in the context of one.
 interface Window {
@@ -162,7 +152,7 @@ class Upload {
 
 		if (this.blob) {
 			// Backwards compatability with browsers that don't have Blob.stream. (Safari pre-14.1)
-			function read(b: Blob): Promise<Uint8Array> {
+			let read = (b: Blob): Promise<Uint8Array>  => {
 				return new Promise((resolve) => {
 					const fr = new FileReader();
 					fr.onload = () => {
@@ -546,8 +536,8 @@ async function connect() {
 			dc.onclose = () => {
 				disconnected("datachannel closed");
 			};
-			dc.onerror = (e) => {
-				disconnected(`datachannel error: ${e.error}`);
+			dc.onerror = e => {
+				disconnected(`datachannel error: ${e}`);
 			};
 		};
 
@@ -565,7 +555,11 @@ async function connect() {
 			fingerprint[0] % 8
 		})`;
 	} catch (err) {
-		disconnected(err);
+		if (err instanceof Error) {
+			disconnected(err.toString());
+		} else if (typeof err === "string") {
+			disconnected(err);
+		}
 	}
 }
 
@@ -790,11 +784,6 @@ function browserhacks() {
 		console.log("quirks: detected ios page preview");
 	}
 
-	// Detect for features we need for this to work.
-	if (!window.WebSocket || !window.RTCPeerConnection || !window.WebAssembly) {
-		hacks.browserunsupported = true;
-	}
-
 	// Firefox does not support clipboard.read.
 	if (!navigator.clipboard || !navigator.clipboard.read) {
 		hacks.noclipboardapi = true;
@@ -802,18 +791,9 @@ function browserhacks() {
 	}
 
 	// Are we in an extension?
-	if (window.chrome && chrome.runtime && chrome.runtime.getURL) {
+	if (window.chrome && chrome.runtime) {
 		hacks.ext = true;
-		const resourceURL = chrome.runtime.getURL("");
-		if (resourceURL.startsWith("moz")) {
-			console.log("quirks: firefox extension, no serviceworkers");
-			hacks.nosw = true;
-		} else if (resourceURL.startsWith("chrome")) {
-			console.log("quirks: chrome extension");
-			hacks.chromeext = true;
-		} else {
-			console.log("quirks: unknown browser extension");
-		}
+		console.log("quirks: browser extension");
 	}
 }
 
@@ -882,11 +862,9 @@ async function init() {
 	// Detect Browser Quirks.
 	browserhacks();
 
+	let wasmURL = "webwormhole.wasm";
 	if (hacks.ext) {
 		signalserver = new URL("https://webwormhole.io/");
-	}
-	let wasmURL = "webwormhole.wasm";
-	if (hacks.chromeext) {
 		wasmURL = chrome.runtime.getURL("webwormhole.wasm");
 	}
 

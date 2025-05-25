@@ -1,7 +1,8 @@
-chrome.browserAction.onClicked.addListener(() => {
+'use strict';
+chrome.action.onClicked.addListener(() => {
 	chrome.windows.create({
 		type: "panel",
-		url: "index.html",
+		url: chrome.runtime.getURL("index.html"),
 		width: 600,
 		height: 600,
 	});
