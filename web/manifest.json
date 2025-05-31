@@ -16,9 +16,8 @@
 		"default_icon": "icon.svg"
 	},
 	"background": {
-		"scripts": [
-			"background.js"
-		]
+		"service_worker":  "sw.js",
+		"scripts":  ["sw.js"]
 	},
 	"content_security_policy": {
 		"extension_pages": "default-src 'self'; script-src 'self' 'wasm-unsafe-eval'; img-src 'self' blob:; connect-src wss://webwormhole.io"
@@ -27,5 +26,6 @@
 		"gecko": {
 			"id": "{30b9cc0e-c7e0-4de7-81a1-71742f1d652d}"
 		}
-	}
+	},
+	"minimum_chrome_version": "100"
 }

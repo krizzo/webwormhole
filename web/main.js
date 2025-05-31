@@ -636,6 +636,7 @@ function browserhacks() {
     // Are we in an extension?
     if (window.chrome && chrome.runtime) {
         hacks.ext = true;
+        hacks.nosw = true;
         console.log("quirks: browser extension");
     }
 }
