@@ -693,7 +693,7 @@ async function init() {
     browserhacks();
     let wasmURL = "webwormhole.wasm";
     if (hacks.ext) {
-        signalserver = new URL("https://webwormhole.io/");
+        signalserver = new URL("https://webwormhole.com/");
         wasmURL = chrome.runtime.getURL("webwormhole.wasm");
     }
     // Wait for the ServiceWorker, WebAssembly, and DOM to be ready.

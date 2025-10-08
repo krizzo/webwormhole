@@ -28,7 +28,7 @@ var subcmds = map[string]func(args ...string){
 
 var (
 	verbose bool   = false
-	sigserv string = "https://webwormhole.io"
+	sigserv string = "https://webwormhole.com"
 )
 
 var stderr = flag.CommandLine.Output()
@@ -83,7 +83,7 @@ func newConn(code string, length int) *wormhole.Wormhole {
 				"%s%s%s",
 				"the signalling server is running an incompatable version.\n",
 				"try upgrading the client:\n\n",
-				"    go get webwormhole.io/cmd/ww\n",
+				"    go install webwormhole.io/cmd/ww@latest\n",
 			)
 		}
 		if err != nil {
@@ -116,7 +116,7 @@ func newConn(code string, length int) *wormhole.Wormhole {
 			"%s%s%s",
 			"the signalling server is running an incompatable version.\n",
 			"try upgrading the client:\n\n",
-			"    go get webwormhole.io/cmd/ww\n",
+			"    go install webwormhole.io/cmd/ww@latest\n",
 		)
 	}
 	if err != nil {

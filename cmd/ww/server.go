@@ -345,7 +345,7 @@ func server(args ...string) {
 	cert := set.String("cert", "", "https certificate (leave empty to use letsencrypt)")
 	key := set.String("key", "", "https certificate key")
 	html := set.String("ui", "./web", "path to the web interface files")
-	stunservers := set.String("stun", "stun:relay.webwormhole.io", "list of STUN server addresses to tell clients to use")
+	stunservers := set.String("stun", "stun:relay.webwormhole.com", "list of STUN server addresses to tell clients to use")
 	set.StringVar(&turnServer, "turn", "", "TURN server to use for relaying")
 	set.StringVar(&turnSecret, "turn-secret", "", "secret for HMAC-based authentication in TURN server")
 	set.Parse(args[1:])
@@ -370,6 +370,12 @@ func server(args ...string) {
 		// Handle WebSocket connections.
 		if strings.ToLower(r.Header.Get("Upgrade")) == "websocket" {
 			relay(w, r)
+			return
+		}
+
+		if r.Host == "webwormhole.io" {
+			// Hard code the redirect in here for the transition. We can move
+			http.Redirect(w, r, fmt.Sprintf("https://webwormhole.com%v", r.URL.Path), 307)
 			return
 		}
 

@@ -5,7 +5,7 @@ OR CRYPTOGRAPHY REVIEW THIS SOFTWARE MIGHT BE BROKEN AND UNSAFE
 	https://xkcd.com/949/
 
 WebWormhole creates ephemeral pipes between computers to send files
-or other data. Try it at https://webwormhole.io or on the command
+or other data. Try it at https://webwormhole.com or on the command
 line.
 
 On one computer the tool generates a one-time code:
@@ -50,7 +50,7 @@ CPace) and a generated random password, similar to Magic Wormhole.
 The session descriptions include the fingerprints of the DTLS
 certificates that WebRTC uses to secure its communications.
 
-The author operates the signalling server at webwormhole.io, its
+The author operates the signalling server at webwormhole.com, its
 alias wrmhl.link, and a relay server. These are free to use but
 come with no SLAs or any guarantees of uptime. They facilitate
 establishing connections between peers, but do not handle any
@@ -58,7 +58,7 @@ transferred data in cleartext.
 
 The protocol does not need to trust the signalling server to maintain
 the confidentiality of the files transferred. However, the convenience
-of using the web client directly on webwormhole.io comes at the
+of using the web client directly on webwormhole.com comes at the
 cost of having to trust the code it serves. If the server is ever
 compromised it can be used inject malicious code that undermines
 the security of the client. To mitigate this, you can have more
@@ -115,7 +115,7 @@ the PAKE?
 	signalling server at all. There's also a mobile app version
 	in the works.
 
-	The web version hosted on webwormhole.io exists as a middle
+	The web version hosted on webwormhole.com exists as a middle
 	ground between convenience and security. Like any other
 	website you visit, you do have to trust it's not running
 	any malicious code in your browser.
